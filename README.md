@@ -1,8 +1,8 @@
 ## What is this project?
 
 - This project using for Meta FE Certificate.
-- Github: https://github.com/kelvyn-thai/road-to-master-fe
-- Production: https://road-to-master-fe.vercel.app/
+- Github: https://github.com/kelvyn-thai/aquariux-fe
+- Production: https://aquariux-fe.vercel.app/
 - Copyright [Kelvyn Thai](thainguyenhoangphatit@gmail.com)
 - Make by [Kelvyn Thai](https://github.com/kelvyn-thai)
 
@@ -29,7 +29,7 @@ In the project directory, you can run:
 - Structure project followed by: [nextjs](https://nextjs.org/docs/getting-started)
 - Manage build, deploy, start,...: [next](https://www.npmjs.com/package/next)
 - Cascading Style Sheets: [Tailwindcss](https://tailwindcss.com/)
-- UI Core: [shadcn](https://ui.shadcn.com)
+- UI Core: [core-ui](https://github.com/kelvyn-thai/core-ui)
 - Find, fix, format, v...v problems in JavaScript code :
   - Eslint: https://eslint.org/
   - Husky: https://typicode.github.io/husky
