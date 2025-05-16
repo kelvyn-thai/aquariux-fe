@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import { Footer, HeaderCSR as Header } from "@/components";
+import { Footer, Header } from "@/components";
 
 export default function Layout({ children }: { children: ReactElement | React.ReactNode }) {
   return (

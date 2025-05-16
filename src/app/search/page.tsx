@@ -1,10 +1,10 @@
 import { Layout } from "@/components";
-import { HomeUI } from "@/modules/home";
+import { SearchUI } from "@/modules/search";
 
 export default async function Page() {
   return (
     <Layout>
-      <HomeUI />
+      <SearchUI />
     </Layout>
   );
 }

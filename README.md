@@ -9,6 +9,7 @@
 ## How to run this project?
 
 - Run yarn
+- cp .env.ci .env
 - Run yarn dev to start app on port 3000
 
 ## Available scripts
