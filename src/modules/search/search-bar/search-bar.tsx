@@ -20,8 +20,8 @@ export const SearchBar = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [keySearch, setKeySearch] = useState("");
-
   const [setData] = useSearchHistoryStore(useShallow((s) => [s.setData]));
+  const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
 
   const {
     isPending,
@@ -31,7 +31,6 @@ export const SearchBar = () => {
     setError,
     setData: setItems,
   } = useQuery(useShallow((s) => s));
-  const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
 
   const searchItemsFormatted: ComboboxItem[] = useMemo(
     () =>
@@ -55,7 +54,9 @@ export const SearchBar = () => {
 
   const handleSearch = useMemo(() => {
     return debounce(async (value: string) => {
-      if (value.trim().length === 0) {
+      const isSearchEmpty = value.trim().length === 0;
+
+      if (isSearchEmpty) {
         setItems({ data: [] });
         return;
       }
@@ -70,7 +71,6 @@ export const SearchBar = () => {
           return response;
         },
         queryFnFail(error) {
-          console.log({ error });
           if (error instanceof AxiosError) {
             setError(error.response?.data?.errorMsg);
             setItems({ data: [] });
@@ -97,6 +97,7 @@ export const SearchBar = () => {
           keySearch={keySearch}
           onChangeKeySearch={async (value) => {
             setKeySearch(value);
+            setError("");
             handleSearch(value);
           }}
           isLoading={isPending}
