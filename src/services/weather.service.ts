@@ -118,8 +118,6 @@ export class WeatherService {
 
       const { error, data } = result;
 
-      console.log({ error });
-
       if (error || data.data.length === 0) {
         throw new ApiError({
           code: ApiErrorCode.ERROR_INVALID_COUNTRY_OR_CITY,

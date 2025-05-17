@@ -8,4 +8,8 @@ export interface SearchHistoryGeoEntityFormattedResDto extends SearchHistoryGeoE
   formattedValue: string;
 }
 
-export {};
+export interface SearchHistoryState {
+  data: Record<string, SearchHistoryGeoEntityResDto>;
+  setData: (item: SearchHistoryGeoEntityResDto) => void;
+  removeData: (id: string) => void;
+}

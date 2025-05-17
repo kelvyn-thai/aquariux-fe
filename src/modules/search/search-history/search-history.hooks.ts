@@ -1,12 +1,6 @@
 import { createStore } from "@core-ui/@zustand";
 
-import { SearchHistoryGeoEntityResDto } from "./search-history.models";
-
-export interface SearchHistoryState {
-  data: Record<string, SearchHistoryGeoEntityResDto>;
-  setData: (item: SearchHistoryGeoEntityResDto) => void;
-  removeData: (id: string) => void;
-}
+import { SearchHistoryGeoEntityResDto, SearchHistoryState } from "./search-history.models";
 
 export const [useSearchHistoryStore] = createStore<SearchHistoryState>(
   (set) => ({

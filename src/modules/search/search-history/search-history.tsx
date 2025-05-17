@@ -25,9 +25,9 @@ export const SearchHistory = () => {
   );
 
   return (
-    <div className="mt-6" data-testid="search-history">
+    <div className="mt-4" data-testid="search-history">
       <h4 className="text-base leading-6 font-bold text-neutral-1000">Search history</h4>
-      <SearchCard className="min-h-1/2">
+      <SearchCard className="min-h-60 mt-6">
         {searchList.map((item) => (
           <div
             key={item.id}
@@ -43,6 +43,7 @@ export const SearchHistory = () => {
                     `/?${new URLSearchParams({
                       lon: String(item.lon),
                       lat: String(item.lat),
+                      location: item.formattedValue,
                     }).toString()}`
                   );
                 }}

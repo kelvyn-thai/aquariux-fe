@@ -9,10 +9,12 @@ import { AxiosError } from "axios";
 import debounce from "lodash/debounce";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { unstable_batchedUpdates } from "react-dom";
 
 import { useSearchHistoryStore } from "@/modules/search";
 import { GetGeoEntityResponseDto } from "@/schemas";
 import { weatherService } from "@/services";
+import { useSearchStore } from "@/stores";
 
 const useQuery = createQueryStore<GetGeoEntityResponseDto>();
 
@@ -21,7 +23,9 @@ export const SearchBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [keySearch, setKeySearch] = useState("");
   const [setData] = useSearchHistoryStore(useShallow((s) => [s.setData]));
-  const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
+  const [selectedItem, setSelectedItem] = useSearchStore(
+    useShallow((s) => [s.selectedItem, s.setSelectedItem])
+  );
 
   const {
     isPending,
@@ -81,24 +85,28 @@ export const SearchBar = () => {
   }, [executeQueryFn, setError, setItems]);
 
   return (
-    <div className="h-24" data-testid="search-bar">
+    <div className="h-16" data-testid="search-bar">
       <div className="grid grid-cols-[3fr_1fr] gap-4 items-end">
         <Combobox
-          label={""}
           placeholder="Search country or city here..."
           items={items}
           onSelectItem={(item) => {
-            setSelectedItem(item);
-            setIsMenuOpen(false);
-            setKeySearch(item.text);
-            setData({ ...item.metadata, searchTime: new Date().getTime() });
+            unstable_batchedUpdates(() => {
+              setSelectedItem(item);
+              setIsMenuOpen(false);
+              setKeySearch(item.text);
+              setData({ ...item.metadata, searchTime: new Date().getTime() });
+            });
           }}
           selectedItem={selectedItem}
           keySearch={keySearch}
           onChangeKeySearch={async (value) => {
-            setKeySearch(value);
-            setError("");
-            handleSearch(value);
+            unstable_batchedUpdates(() => {
+              setKeySearch(value);
+              setError("");
+              setSelectedItem(null);
+              handleSearch(value);
+            });
           }}
           isLoading={isPending}
           isMenuOpen={isMenuOpen}
@@ -113,6 +121,7 @@ export const SearchBar = () => {
               `/?${new URLSearchParams({
                 lon: selectedItem.metadata.lon,
                 lat: selectedItem.metadata.lat,
+                location: selectedItem.text,
               }).toString()}`
             )
           }

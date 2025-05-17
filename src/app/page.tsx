@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-import { Layout } from "@/components";
+import { Header, Layout } from "@/components";
 import {
   SearchDetail,
   SearchDetailSkeleton,
@@ -15,26 +15,29 @@ export default async function Page({
   searchParams: Promise<{
     lat: string;
     lon: string;
+    location: string;
   }>;
 }) {
   const params = await searchParams;
 
-  if (!params.lat || !params.lon) {
+  if (!params.lat || !params.lon || !params.location) {
     redirect("/search");
   }
 
   return (
-    <Layout>
-      <Suspense fallback={<SearchSummarySkeleton />}>
-        <SearchSummary {...params} />
-      </Suspense>
-
-      <section className="mt-6">
-        <h4 className="font-bold text-base">5-day Forecast (3 Hours)</h4>
-        <Suspense fallback={<SearchDetailSkeleton />}>
-          <SearchDetail {...params} />
+    <>
+      <Header title={params.location} />
+      <Layout>
+        <Suspense fallback={<SearchSummarySkeleton />}>
+          <SearchSummary {...params} />
         </Suspense>
-      </section>
-    </Layout>
+        <section className="mt-6">
+          <h4 className="font-bold text-base">5-day Forecast (3 Hours)</h4>
+          <Suspense fallback={<SearchDetailSkeleton />}>
+            <SearchDetail {...params} />
+          </Suspense>
+        </section>
+      </Layout>
+    </>
   );
 }

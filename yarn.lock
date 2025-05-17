@@ -4243,9 +4243,9 @@ cookiejar@^2.1.4:
   resolved "https://registry.yarnpkg.com/cookiejar/-/cookiejar-2.1.4.tgz#ee669c1fea2cf42dc31585469d193fef0d65771b"
   integrity sha512-LDx6oHrK+PhzLKJU9j5S7/Y3jM/mUHvD/DeI1WQmJn652iPC5Y4TBzC9l+5OMOXlyTTA+SmVUPm0HQUwpD5Jqw==
 
-"core-ui@git+https://github.com/kelvyn-thai/core-ui.git#v1.0.10":
-  version "1.0.10"
-  resolved "git+https://github.com/kelvyn-thai/core-ui.git#42b81321bed513d30112551e4561cbdb1ce065a4"
+"core-ui@git+https://github.com/kelvyn-thai/core-ui.git#v1.0.13":
+  version "1.0.13"
+  resolved "git+https://github.com/kelvyn-thai/core-ui.git#2ec70ed175eebfc22fa727685cee31bfb02dd094"
   dependencies:
     clsx "^2.1.1"
     react "^19"
