@@ -10,9 +10,13 @@ import {
 } from "@/schemas";
 import { ApiError, ApiErrorCode, ApiStatusCode } from "@/utils";
 
-const API_KEY = process.env.OPEN_WEATHER_API_KEY!;
-
 export class WeatherService {
+  apiKey!: string;
+
+  constructor() {
+    this.apiKey = process.env.OPEN_WEATHER_API_KEY!;
+  }
+
   async getCurrentWeatherData({
     lon,
     lat,
@@ -20,25 +24,56 @@ export class WeatherService {
     lon: string;
     lat: string;
   }): Promise<GetWeatherResponse | null> {
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=en&appid=${API_KEY}`,
-      {
-        next: {
-          tags: [`$WEATHER_${lat}_${lon}`],
-          revalidate: 30,
-        },
-        cache: "force-cache",
+    try {
+      if (!lon || !lat) {
+        throw new ApiError({
+          code: ApiErrorCode.ERR_MISSING_QUERY,
+          message: "Missing required query parameter 'lon' & 'lat'",
+          statusCode: ApiStatusCode.BAD_REQUEST,
+        });
       }
-    ).then((res) => res.json());
 
-    const { error, data } = GetWeatherResponseSchema.safeParse({ data: response });
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=en&appid=${this.apiKey}`,
+        {
+          next: {
+            tags: [`$WEATHER_${lat}_${lon}`],
+            revalidate: 30,
+          },
+          cache: "force-cache",
+        }
+      );
 
-    if (error) {
-      return null;
+      if (!response.ok) {
+        throw new ApiError({
+          code: ApiErrorCode.ERR_EXTERNAL_API_FAILED,
+          message: "Failed to fetch external weather data",
+          statusCode: ApiStatusCode.BAD_GATEWAY,
+        });
+      }
+
+      const rawData = await response.json();
+
+      const { error, data } = GetWeatherResponseSchema.safeParse({ data: rawData });
+
+      if (error || !data) {
+        throw new ApiError({
+          code: ApiErrorCode.ERROR_INVALID_COUNTRY_OR_CITY,
+          message: "Location not found or unsupported",
+          statusCode: ApiStatusCode.BAD_REQUEST,
+        });
+      }
+
+      return data;
+    } catch (error) {
+      if (error instanceof ApiError || error instanceof Error) {
+        throw new Error(error.message);
+      }
+
+      throw new Error("Unknown error");
     }
-
-    return data;
   }
+
   async getDirectGeoCoding(q: string) {
     const response: AxiosResponse<GetGeoEntityResponseDto> = await axios.get(`/api/geo?q=${q}`);
 
@@ -56,7 +91,7 @@ export class WeatherService {
       }
 
       const response = await fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${q}&limit=10&appid=${API_KEY}`,
+        `https://api.openweathermap.org/geo/1.0/direct?q=${q}&limit=10&appid=${this.apiKey}`,
         {
           next: {
             tags: [`$GEO_${q}`],

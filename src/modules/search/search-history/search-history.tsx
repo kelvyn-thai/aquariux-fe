@@ -5,6 +5,8 @@ import { useShallow } from "@core-ui/@zustand";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
+import { SearchCard } from "@/modules/search";
+
 import { useSearchHistoryStore } from "./search-history.hooks";
 import { SearchHistoryGeoEntityFormattedResDto } from "./search-history.models";
 
@@ -25,9 +27,9 @@ export const SearchHistory = () => {
   return (
     <div className="mt-6" data-testid="search-history">
       <h4 className="text-base leading-6 font-bold text-neutral-1000">Search history</h4>
-      <ul className="mt-6 border border-slate-200 rounded-xl py-6 shadow-xl min-h-32 bg-white">
+      <SearchCard className="min-h-1/2">
         {searchList.map((item) => (
-          <li
+          <div
             key={item.id}
             className="grid grid-cols-[4fr_min-content] gap-4 items-center px-6 h-10"
           >
@@ -52,9 +54,9 @@ export const SearchHistory = () => {
                 <TrashIcon />
               </Icon>
             </span>
-          </li>
+          </div>
         ))}
-      </ul>
+      </SearchCard>
     </div>
   );
 };

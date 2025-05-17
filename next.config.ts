@@ -1,5 +1,5 @@
-import path from "path";
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
         pathname: "/u/**",
+      },
+      {
+        protocol: "https",
+        hostname: "openweathermap.org",
+        pathname: "/img/wn/**",
       },
     ],
   },

@@ -4,8 +4,7 @@ describe("Search UI", () => {
   it("should render Search UI correctly", () => {
     cy.visit(envConfigs.NEXT_PUBLIC_DOMAIN_URL);
 
-    cy.get("[data-testid=title").as("title");
-    cy.get("@title").should("exist");
-    cy.get("@title").should("contain.text", "Home page");
+    cy.get("[data-testid=search-summary").as("searchSummary");
+    cy.get("@searchSummary").should("exist");
   });
 });

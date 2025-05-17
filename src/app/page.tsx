@@ -1,10 +1,23 @@
-import { Layout } from "@/components";
-import { HomeUI } from "@/modules/home";
+import { Suspense } from "react";
 
-export default async function Page() {
+import { Layout } from "@/components";
+import { SearchSummary, SearchSummarySkeleton } from "@/modules/search";
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    lat: string;
+    lon: string;
+  }>;
+}) {
+  const params = await searchParams;
+
   return (
     <Layout>
-      <HomeUI />
+      <Suspense fallback={<SearchSummarySkeleton />}>
+        <SearchSummary {...params} />
+      </Suspense>
     </Layout>
   );
 }

@@ -70,3 +70,15 @@ export const WeatherSchema = z.object({
   name: z.string(),
   cod: z.number(),
 });
+
+export type WeatherEntity = z.infer<typeof WeatherSchema>;
+
+export interface FormattedWeatherEntity extends WeatherEntity {
+  formattedDate: string;
+  formattedTemperature: string;
+  formattedWeatherDesc: string;
+  formattedIconURL: string;
+  formattedHumidity: string;
+  formattedWindSpeed: string;
+  formattedVisibility: string;
+}
