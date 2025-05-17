@@ -1,8 +1,12 @@
+"use client";
+
+import { SearchBar, SearchHistory } from "@/modules/search";
+
 export const SearchUI = () => {
   return (
-    <section>
-      {" "}
-      <h1 data-testid="title">This search & history page</h1>
+    <section className="h-screen min-w-xxs max-w-sm w-full m-auto" data-testid="search-ui">
+      <SearchBar />
+      <SearchHistory />
     </section>
   );
 };

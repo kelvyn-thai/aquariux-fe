@@ -6,11 +6,10 @@ export default function Layout({ children }: { children: ReactElement | React.Re
   return (
     <div
       id="app"
-      className="overflow-scroll bg-primary-200
-      bg-pr"
+      className="overflow-scroll bg-neutral-50 w-full min-h-screen relative text-black-500 shadow-xl"
     >
       <Header />
-      <main className="w-full relative text-black-500">{children}</main>
+      <main>{children}</main>
       <Footer />
     </div>
   );

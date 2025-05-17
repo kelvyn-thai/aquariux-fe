@@ -1,3 +1,1 @@
-export * from "./authenticate.service";
-
-export { default as AuthServices } from "./authenticate.service";
+export * from "./weather.service";

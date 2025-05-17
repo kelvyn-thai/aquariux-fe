@@ -4,8 +4,10 @@ describe("Search UI", () => {
   it("should render Search UI correctly", () => {
     cy.visit(`${envConfigs.NEXT_PUBLIC_DOMAIN_URL}/search`);
 
-    cy.get("[data-testid=title").as("title");
-    cy.get("@title").should("exist");
-    cy.get("@title").should("contain.text", "This search & history page");
+    cy.get("[data-testid=search-bar").as("searchBar");
+    cy.get("@searchBar").should("exist");
+
+    cy.get("[data-testid=search-history").as("searchHistory");
+    cy.get("@searchHistory").should("exist");
   });
 });

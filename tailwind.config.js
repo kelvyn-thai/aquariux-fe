@@ -128,6 +128,7 @@ module.exports = {
           foreground: "hsl(var(--primary-foreground))",
         },
         neutral: {
+          50: "#EFF3FC",
           100: "#f6f9fc",
           200: "#eef1f4",
           300: "#dde3e8",
