@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { Layout } from "@/components";
@@ -12,6 +13,10 @@ export default async function Page({
   }>;
 }) {
   const params = await searchParams;
+
+  if (!params.lat || !params.lon) {
+    redirect("/search");
+  }
 
   return (
     <Layout>
