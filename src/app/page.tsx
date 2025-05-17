@@ -2,7 +2,12 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { Layout } from "@/components";
-import { SearchSummary, SearchSummarySkeleton } from "@/modules/search";
+import {
+  SearchDetail,
+  SearchDetailSkeleton,
+  SearchSummary,
+  SearchSummarySkeleton,
+} from "@/modules/search";
 
 export default async function Page({
   searchParams,
@@ -23,6 +28,13 @@ export default async function Page({
       <Suspense fallback={<SearchSummarySkeleton />}>
         <SearchSummary {...params} />
       </Suspense>
+
+      <section className="mt-6">
+        <h4 className="font-bold text-base">5-day Forecast (3 Hours)</h4>
+        <Suspense fallback={<SearchDetailSkeleton />}>
+          <SearchDetail {...params} />
+        </Suspense>
+      </section>
     </Layout>
   );
 }

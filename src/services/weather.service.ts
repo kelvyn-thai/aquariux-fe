@@ -1,9 +1,12 @@
 import axios, { AxiosResponse } from "axios";
+import { v4 } from "uuid";
 
 import {
   GeoEntity,
   GeoEntityResDto,
   GeoEntitySchema,
+  GetForecastResponse,
+  GetForecastResponseSchema,
   GetGeoEntityResponseDto,
   GetWeatherResponse,
   GetWeatherResponseSchema,
@@ -57,6 +60,67 @@ export class WeatherService {
       const { error, data } = GetWeatherResponseSchema.safeParse({ data: rawData });
 
       if (error || !data) {
+        throw new ApiError({
+          code: ApiErrorCode.ERROR_INVALID_COUNTRY_OR_CITY,
+          message: "Location not found or unsupported",
+          statusCode: ApiStatusCode.BAD_REQUEST,
+        });
+      }
+
+      return data;
+    } catch (error) {
+      if (error instanceof ApiError || error instanceof Error) {
+        throw new Error(error.message);
+      }
+
+      throw new Error("Unknown error");
+    }
+  }
+
+  async getForecastData({ lon, lat }: { lon: string; lat: string }): Promise<GetForecastResponse> {
+    try {
+      if (!lon || !lat) {
+        throw new ApiError({
+          code: ApiErrorCode.ERR_MISSING_QUERY,
+          message: "Missing required query parameter 'lon' & 'lat'",
+          statusCode: ApiStatusCode.BAD_REQUEST,
+        });
+      }
+
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=en&appid=${this.apiKey}`,
+        {
+          next: {
+            tags: [`$FORECAST_{lat}_${lon}`],
+            revalidate: 30,
+          },
+          cache: "force-cache",
+        }
+      );
+
+      if (!response.ok) {
+        throw new ApiError({
+          code: ApiErrorCode.ERR_EXTERNAL_API_FAILED,
+          message: "Failed to fetch external forecast data",
+          statusCode: ApiStatusCode.BAD_GATEWAY,
+        });
+      }
+
+      const rawData = await response.json();
+
+      let list = rawData.list;
+
+      if (Array.isArray(list)) {
+        list = list.map((item) => ({ ...item, id: v4() }));
+      }
+
+      const result = GetForecastResponseSchema.safeParse({ data: list });
+
+      const { error, data } = result;
+
+      console.log({ error });
+
+      if (error || data.data.length === 0) {
         throw new ApiError({
           code: ApiErrorCode.ERROR_INVALID_COUNTRY_OR_CITY,
           message: "Location not found or unsupported",
