@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import { FormattedWeatherEntity, WeatherEntity } from "@/schemas";
 
 export const formatWeather = (data: WeatherEntity): FormattedWeatherEntity => {
@@ -14,11 +16,7 @@ export const formatWeather = (data: WeatherEntity): FormattedWeatherEntity => {
   return {
     ...data,
 
-    formattedDate: new Date(dt * 1000).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }),
+    formattedDate: dayjs.unix(dt).format("D MMMM YYYY"),
     formattedIconURL: weather
       ? `https://openweathermap.org/img/wn/${weather.icon}@2x.png`
       : "/fallback.png",

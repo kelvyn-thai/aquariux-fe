@@ -4,3 +4,5 @@ export * from "./search-history";
 export * from "./search-summary";
 export * from "./search-card";
 export * from "./search-summary-skeleton";
+export * from "./search-detail";
+export * from "./search-detail-skeleton";

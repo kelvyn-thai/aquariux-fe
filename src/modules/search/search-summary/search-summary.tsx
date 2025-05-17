@@ -29,6 +29,8 @@ export const SearchSummaryInfo = ({ data }: { data: WeatherEntity }) => {
             width={100}
             height={100}
             className="mx-auto"
+            loading="lazy"
+            priority={false}
           />
           <div>
             <p className="text-3xl font-bold">{formattedTemperature}</p>
@@ -73,10 +75,12 @@ export const SearchSummary = async ({ lon, lat }: { lat: string; lon: string }) 
   }
 
   return (
-    <SearchCard className="p-4 min-h-[230px]" data-testid="search-summary">
+    <section>
+      <SearchCard className="p-4 min-h-[230px]" data-testid="search-summary">
+        {response?.data && <SearchSummaryInfo data={response.data} />}
+      </SearchCard>
       {errorMsg && <ErrorCard errorMsg={errorMsg} />}
-      {response?.data && <SearchSummaryInfo data={response.data} />}
-    </SearchCard>
+    </section>
   );
 };
 
