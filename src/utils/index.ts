@@ -1,4 +1,3 @@
 export * from "./delay.utils";
 export * from "./errors.utils";
-export * from "./format-weather.utils";
-export * from "./format-forecast.utils";
+export * from "./weather";
