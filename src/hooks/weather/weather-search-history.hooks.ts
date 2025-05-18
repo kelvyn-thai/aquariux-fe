@@ -1,4 +1,5 @@
-import { createStore } from "@core-ui/@zustand";
+import { createJSONStorage, createStore } from "@core-ui/@zustand";
+import axios from "axios";
 
 import { WeatherSearchHistoryItem, WeatherSearchHistoryState } from "@/models";
 
@@ -36,6 +37,44 @@ export const [useWeatherSearchHistoryStore] = createStore<WeatherSearchHistorySt
           data: state.data,
         };
       },
+      storage: createJSONStorage(() => ({
+        async setItem(key, value) {
+          try {
+            const res = await axios.post("/api/encrypt", { value });
+
+            const encrypted = res.data.encrypted || null;
+
+            localStorage.setItem(key, encrypted);
+          } catch (err) {
+            console.error("Failed to encrypt:", err);
+            localStorage.removeItem(key);
+            return null;
+          }
+        },
+        async getItem(key) {
+          const encrypted = localStorage.getItem(key);
+
+          if (!encrypted) return null;
+
+          try {
+            const res = await axios.post("/api/decrypt", {
+              cipherText: encrypted,
+            });
+
+            const decrypted = res.data.decrypted;
+
+            return JSON.stringify(decrypted);
+          } catch (err) {
+            console.error("Failed to decrypt:", err);
+            localStorage.removeItem(key);
+            return null;
+          }
+        },
+        removeItem(key) {
+          localStorage.removeItem(key);
+        },
+      })),
+
       version: 1,
     },
   }
