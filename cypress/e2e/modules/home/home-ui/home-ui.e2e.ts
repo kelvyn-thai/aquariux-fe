@@ -6,7 +6,7 @@ describe("Search UI", () => {
       `${envConfigs.NEXT_PUBLIC_DOMAIN_URL}/?${new URLSearchParams({ lon: "1", lat: "1", location: "awesome" }).toString()}`
     );
 
-    cy.get("[data-testid=search-summary").as("searchSummary");
+    cy.get("[data-testid=weather-summary").as("searchSummary");
     cy.get("@searchSummary").should("exist");
   });
 });

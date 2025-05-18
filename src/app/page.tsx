@@ -3,11 +3,11 @@ import { Suspense } from "react";
 
 import { Header, Layout } from "@/components";
 import {
-  SearchDetail,
-  SearchDetailSkeleton,
-  SearchSummary,
-  SearchSummarySkeleton,
-} from "@/modules/search";
+  WeatherForecast,
+  WeatherForecastSkeleton,
+  WeatherSummary,
+  WeatherSummarySkeleton,
+} from "@/modules";
 
 export default async function Page({
   searchParams,
@@ -28,13 +28,13 @@ export default async function Page({
     <>
       <Header title={params.location} />
       <Layout>
-        <Suspense fallback={<SearchSummarySkeleton />}>
-          <SearchSummary {...params} />
+        <Suspense fallback={<WeatherSummarySkeleton />}>
+          <WeatherSummary {...params} />
         </Suspense>
         <section className="mt-6">
           <h4 className="font-bold text-base">5-day Forecast (3 Hours)</h4>
-          <Suspense fallback={<SearchDetailSkeleton />}>
-            <SearchDetail {...params} />
+          <Suspense fallback={<WeatherForecastSkeleton />}>
+            <WeatherForecast {...params} />
           </Suspense>
         </section>
       </Layout>
