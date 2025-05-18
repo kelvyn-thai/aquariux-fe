@@ -11,10 +11,9 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 
-import { getDirectGeoCodingSA } from "@/app/actions";
 import { useWeatherSearchHistoryStore } from "@/hooks";
 import { GetGeoEntityResponseDto } from "@/schemas";
-// import { weatherService } from "@/services";
+import { weatherService } from "@/services";
 import { useWeatherSearchStore } from "@/stores";
 
 const useQuery = createQueryStore<GetGeoEntityResponseDto>();
@@ -71,18 +70,19 @@ export const WeatherSearchBar = () => {
           setError("");
           setItems({ data: [] });
 
-          // const response = await weatherService.getDirectGeoCoding(value);
-
-          const response = await getDirectGeoCodingSA(value);
+          const response = await weatherService.getDirectGeoCoding(value);
 
           return response;
         },
         queryFnFail(error) {
-          console.log({ error });
+          if (error instanceof Error) {
+            setError(error.message);
+          }
+
           if (error instanceof AxiosError) {
             setError(error.response?.data?.errorMsg);
-            setItems({ data: [] });
           }
+          setItems({ data: [] });
         },
       });
     }, 500);
