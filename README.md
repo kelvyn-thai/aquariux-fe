@@ -73,7 +73,7 @@ src/
 ├── stores/                   # Zustand state management
 │   └── weather/
 ├── utils/                    # Utility functions
-│   └── format-weather.utils.ts
+│   └── weather/
 ├── stories/                  # Storybook stories (optional)
 ```
 
@@ -141,24 +141,33 @@ modules/weather/weather-summary/
 ├── index.ts
 
 schemas/weather/
-├───resquests
-├───responses
+├───resquests/
+├─────index.ts
+├───responses/
+├─────index.ts
 ├ weather.schema.ts
+├ index.ts
+
 
 services/weather/
 ├── weather.service.ts
+├── index.ts
 
 stores/weather/
 ├── weather.store.ts
+├── index.ts
 
 hooks/weather/
 ├── weather.hooks.ts
+├── index.ts
 
 models/weather/
 ├── weather.models.ts
+├── index.ts
 
 utils/weather/
 ├── weather.utils.ts
+├── index.ts
 
 ```
 
